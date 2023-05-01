@@ -10,19 +10,12 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5">
-<!--    <div th:each="el : ${post}" class="alert alert-info mt-2">-->
-<!--        <h1 th:text="${el.title}"/>-->
-<!--        <p th:text="${el.full_text}"/>-->
-<!--        <p th:text="${el.views}"/>-->
-<!--        <a th:href="'/blog/' + ${el.id} + '/edit'" class="btn btn-warning">Edit post</a>-->
-<!--        <a th:href="'/blog/' + ${el.id} + '/remove'" class="btn btn-warning">Delete post</a>-->
-<!--    </div>-->
 
     <div class="alert alert-info mt-2">
         <h1 th:text="${post.getTitle()}" class="alert alert-info mt-2"/>
         <p th:text="${post.getFull_text()}"/>
         <p><b>Views:</b> <span th:text="${post.getViews()}"/></p>
-        <a th:href="'/blog/' + ${post.getId()} + '/edit'" class="btn btn-warning">Edit post</a>
+        <a th:href="'/blog/' + ${post.getId()} + '/edit'" class="btn btn-warning">Edit post</a><br><br>
         <a th:href="'/blog/' + ${post.getId()} + '/remove'" class="btn btn-warning">Delete post</a>
     </div>
 

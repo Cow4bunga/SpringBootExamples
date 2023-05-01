@@ -79,10 +79,20 @@ public class BlogController { // to relocate some business logic into dao class
         return "redirect:/blog";
     }
 
+    @GetMapping("/{id}/remove")
+    public String removePost(@PathVariable("id") long id, Model model) {
+        Optional<Post> post = repository.findById(id);
+
+        if (post.isEmpty())
+            return "redirect:/blog";
+
+        model.addAttribute("post", post.get());
+
+        return "blog-remove";
+    }
 
     @PostMapping("/{id}/remove")
     public String deleteByID(@PathVariable(value = "id") long id, Model model) {
-        System.out.println("ABOBA");
         Optional<Post> post = repository.findById(id);
         Post postToDel = post.get();
 

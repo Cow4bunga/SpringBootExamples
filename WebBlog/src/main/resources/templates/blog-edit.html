@@ -16,7 +16,7 @@
       <input type="text" th:value="${post.getTitle()}" name="title" placeholder="Input new name of the article" class="form-control"><br>
       <input type="text" th:value="${post.getAnons()}" name="anons" placeholder="Input edited short description of the article" class="form-control"><br>
       <textarea name="full_text" placeholder="Input edited full text of the article" class="form-control" th:text="${post.getFull_text()}"/><br>
-      <button type="submit" class="btn btn-success">Edit article</button>
+      <button type="submit" class="btn btn-success" th:method="post">Edit article</button>
     </form>
   </div>
 
