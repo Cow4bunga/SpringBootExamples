@@ -2,27 +2,24 @@ package by.levitsky.spring.web_blog.controllers;
 
 import by.levitsky.spring.web_blog.models.Post;
 import by.levitsky.spring.web_blog.repo.PostRepository;
+import by.levitsky.spring.web_blog.service.PostService;
+import by.levitsky.spring.web_blog.service.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/blog")
 public class BlogController { // to relocate some business logic into dao class
-
     @Autowired
-    private PostRepository repository;
+    private PostService postService;
 
     @GetMapping("")// blog by default
     public String getBlogMain(Model model) {
-        Iterable<Post> posts = repository.findAll();
-        model.addAttribute("posts", posts);
+        model.addAttribute("posts", postService.getAllPosts());
         return "blog-main";
     }
 
@@ -36,70 +33,55 @@ public class BlogController { // to relocate some business logic into dao class
                               @RequestParam String anons,
                               @RequestParam String full_text,
                               Model model) {
-        Post post = new Post(title, anons, full_text);
-        repository.save(post);
+        postService.create(new Post(title, anons, full_text));
         return "redirect:/blog";
     }
 
     @GetMapping("/{id}")
     public String getPostByID(@PathVariable(value = "id") long id, Model model) {
-        Optional<Post> post = repository.findById(id);
-        if (post.isEmpty())
+        if(postService.getPostById(id).isEmpty()){
             return "redirect:/blog";
-        model.addAttribute("post", post.get());
+        }
+
+        model.addAttribute("post", postService.getPostById(id).get());
         return "blog-details";
     }
 
     @GetMapping("/{id}/edit")
     public String editPost(@PathVariable("id") long id, Model model) {
-        Optional<Post> post = repository.findById(id);
-
-        if (post.isEmpty())
+        if(postService.getPostById(id).isEmpty()){
             return "redirect:/blog";
+        }
 
-        model.addAttribute("post", post.get());
+        model.addAttribute("post", postService.getPostById(id).get());
 
         return "blog-edit";
     }
 
     @PostMapping("/{id}/edit")
-    public String postBlogEdit(@RequestParam(required = false, name="title") String title,
-                               @RequestParam(required = false, name="anons") String anons,
+    public String postBlogEdit(@RequestParam(required = false, name = "title") String title,
+                               @RequestParam(required = false, name = "anons") String anons,
                                @RequestParam(required = false, name = "full_text") String full_text,
                                @PathVariable(value = "id") long id,
                                Model model) {
-        Optional<Post> post = repository.findById(id);
-
-        Post postToUpd = post.get();
-        postToUpd.setTitle(title);
-        postToUpd.setAnons(anons);
-        postToUpd.setFull_text(full_text);
-        repository.save(postToUpd);
-
+        postService.updatePost(new Post(title,anons,full_text),id);
         return "redirect:/blog";
     }
 
     @GetMapping("/{id}/remove")
     public String removePost(@PathVariable("id") long id, Model model) {
-        Optional<Post> post = repository.findById(id);
-
-        if (post.isEmpty())
+        if(postService.getPostById(id).isEmpty()){
             return "redirect:/blog";
+        }
 
-        model.addAttribute("post", post.get());
+        model.addAttribute("post", postService.getPostById(id).get());
 
         return "blog-remove";
     }
 
     @PostMapping("/{id}/remove")
     public String deleteByID(@PathVariable(value = "id") long id, Model model) {
-        Optional<Post> post = repository.findById(id);
-        Post postToDel = post.get();
-
-        repository.delete(postToDel);
-
-        System.out.println("ABOBA2");
+        postService.deletePost(id);
         return "redirect:/blog";
     }
-
 }
