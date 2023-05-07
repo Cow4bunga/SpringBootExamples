@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <title></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container mt-5 mb-5">
+  <h1>Employee creation</h1>
+  <form th:action="@{/employees/{id}(id=${employee.getId()})}" th:object="${employee}" method="POST">
+    <input type="text" th:field="*{first_name}" placeholder="Input first name of the employee" class="form-control"><br>
+    <input type="text" th:field="*{last_name}" placeholder="Input last name of the employee"
+           class="form-control"><br>
+    <input type="text" th:field="*{email}" placeholder="Input email of the employee" class="form-control"><br>
+    <input type="text" th:field="*{age}" placeholder="Input age of the employee" class="form-control"><br>
+    <input type="text" th:field="*{position}" placeholder="Input position of the employee" class="form-control"><br>
+
+    <button type="submit" class="btn btn-info">Save employee</button>
+  </form>
+</div>
+
+<div th:insert="blocks/footer :: footer"></div>
+
+</body>
+</html>
