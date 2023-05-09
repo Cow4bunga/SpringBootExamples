@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/home")
 public class MainPageController {
-    @GetMapping("/")
-    public String goHome(@RequestParam (name="name",required = false,defaultValue = "Blog")
+    @GetMapping()
+    public String goHome(@RequestParam (name="name",required = false,defaultValue = "System")
                          String name,
                          Model model){
         model.addAttribute("name",name);
